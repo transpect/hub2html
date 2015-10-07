@@ -61,13 +61,13 @@
     </p:input>
   </p:parameters>
   
-  <cascade:load-cascaded name="lc" required="no" filename="hub2html/hub2html.xsl" fallback="http://transpect.io/hub2html/xsl/hub2html.xsl">
+  <tr:load-cascaded name="lc" required="no" filename="hub2html/hub2html.xsl" fallback="http://transpect.io/hub2html/xsl/hub2html.xsl">
     <p:input port="paths">
       <p:pipe port="paths" step="hub2html"/>
     </p:input>
     <p:with-option name="debug" select="$debug"/>
     <p:with-option name="debug-dir-uri" select="$debug-dir-uri"/>
-  </cascade:load-cascaded>
+  </tr:load-cascaded>
   
   <p:sink/>
 
