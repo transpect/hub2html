@@ -28,7 +28,7 @@
     <p:documentation>A Hub 1.1+ document</p:documentation>
   </p:input>
   <p:input port="paths" sequence="true">
-    <p:documentation>If you don’t want to use the transpect:load-cascaded mechanism but 
+    <p:documentation>If you don’t want to use the tr:load-cascaded mechanism but 
     rather use the default XSLT, you can submit <p:empty/> to this port.</p:documentation>
   </p:input>
   <p:input port="other-params" sequence="true" kind="parameter" primary="true"/>
