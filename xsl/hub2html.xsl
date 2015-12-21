@@ -678,6 +678,7 @@
         <xsl:attribute name="id" select="@xml:id"/>
       </xsl:if>
       <xsl:attribute name="class" select="self::node()/name()"/>
+      <xsl:apply-templates select="@srcpath" mode="#current"/>
       <xsl:apply-templates select="node() except dbk:title, dbk:title" mode="#current"/>
     </xsl:element>
   </xsl:template>
@@ -787,7 +788,7 @@
   <xsl:template match="dbk:itemizedlist" mode="hub2htm-lists">
     <ul>
       <xsl:choose>
-        <xsl:when test="@mark = '&#8226;'">
+        <xsl:when test="@mark = ('&#8226;', 'bullet', 'disc')">
           <xsl:attribute name="class" select="'disc'"/>
         </xsl:when>
         <xsl:when test="@mark = 'o'">
@@ -799,7 +800,7 @@
         <xsl:when test="@mark = '&#8212;'">
           <xsl:attribute name="class" select="'emdash'"/>
         </xsl:when>
-        <xsl:when test="@mark = ('&#8211;', 'nomark', 'none')">
+        <xsl:when test="@mark = ('&#8211;', 'nomark', 'none', '')">
           <xsl:attribute name="class" select="'nomark'"/>
         </xsl:when>
         <xsl:otherwise/>
@@ -1222,4 +1223,12 @@
   
     <xsl:template match="@xml:id" mode="hub2htm-remove-ns"/>  
   
+<!-- just a stub (don’t know what the mode should be doing, yet it has to be used in the stylesheet because
+      it is invoked in the xpl -->
+    <xsl:template match="* | @*" mode="hub2htm-figures-equations">
+      <xsl:copy>
+        <xsl:apply-templates select="@* | node()" mode="#current"/>
+      </xsl:copy>
+    </xsl:template>
+
 </xsl:stylesheet>
