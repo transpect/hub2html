@@ -205,7 +205,8 @@
   
   <xsl:template match="processing-instruction()[name() eq 'xml-model']" mode="hub2htm-default"/>
 
-  <xsl:template match="/*[local-name() = ('hub', 'set', 'book', 'article', 'chapter', 'section', 'glossary')]" 
+  <xsl:template match="/*[local-name() = ('hub', 'set', 'book', 'article', 'chapter', 'section', 'glossary',
+                                          'partintro')]" 
     name="build-html-root" mode="hub2htm-default">
     <html>
       <head>
@@ -365,7 +366,7 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="dbk:acknowledgements | dbk:preface | dbk:chapter" mode="hub2htm-default">
+  <xsl:template match="dbk:acknowledgements | dbk:preface | dbk:chapter | dbk:partintro" mode="hub2htm-default">
     <xsl:if test="dbk:info">
       <xsl:for-each-group select="dbk:info/*" group-adjacent="local-name(.)">
         <xsl:choose>
@@ -385,7 +386,9 @@
     <xsl:call-template name="create-section"/>
   </xsl:template>
 
-  <xsl:template match="dbk:toc/dbk:title | dbk:acknowledgements/dbk:title | dbk:preface/dbk:title | dbk:chapter/dbk:title | dbk:appendix | dbk:part" mode="hub2htm-default">
+  <xsl:template match="  dbk:toc/dbk:title | dbk:acknowledgements/dbk:title | dbk:preface/dbk:title 
+                       | dbk:chapter/dbk:title | dbk:appendix/dbk:title | dbk:part/dbk:title
+                       | dbk:partintro/dbk:title" mode="hub2htm-default">
     <xsl:element name="h1">
       <xsl:attribute name="title" select="string-join(.//text()[not(ancestor::dbk:indexterm)],' ')"/>
       <xsl:attribute name="id" select="concat('hd-', generate-id(.))"/>
