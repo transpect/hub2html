@@ -134,7 +134,7 @@
     <p:with-option name="debug-dir-uri" select="$debug-dir-uri"/>
   </tr:xslt-mode>
   
-  <tr:xslt-mode msg="yes" mode="hub2htm-references">
+  <tr:xslt-mode msg="yes" mode="hub2htm-figures-equations">
     <p:input port="parameters">
       <p:pipe step="params" port="result"/>
     </p:input>
@@ -149,7 +149,7 @@
     <p:with-option name="debug-dir-uri" select="$debug-dir-uri"/>
   </tr:xslt-mode>
   
-  <tr:xslt-mode msg="yes" mode="hub2htm-remove-ns">
+  <tr:xslt-mode msg="yes" mode="hub2htm-references">
     <p:input port="parameters">
       <p:pipe step="params" port="result"/>
     </p:input>
@@ -160,6 +160,22 @@
       <p:empty/>
     </p:input>
     <p:with-option name="prefix" select="'hub2htm/hub2htm6'"/>
+    <p:with-option name="debug" select="$debug"/>
+    <p:with-option name="debug-dir-uri" select="$debug-dir-uri"/>
+  </tr:xslt-mode>
+  
+
+  <tr:xslt-mode msg="yes" mode="hub2htm-remove-ns">
+    <p:input port="parameters">
+      <p:pipe step="params" port="result"/>
+    </p:input>
+    <p:input port="stylesheet">
+      <p:pipe step="lc" port="result"/>
+    </p:input>
+    <p:input port="models">
+      <p:empty/>
+    </p:input>
+    <p:with-option name="prefix" select="'hub2htm/hub2htm7'"/>
     <p:with-option name="debug" select="$debug"/>
     <p:with-option name="debug-dir-uri" select="$debug-dir-uri"/>
   </tr:xslt-mode>
