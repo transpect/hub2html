@@ -206,7 +206,7 @@
   <xsl:template match="processing-instruction()[name() eq 'xml-model']" mode="hub2htm-default"/>
 
   <xsl:template match="/*[local-name() = ('hub', 'set', 'book', 'article', 'chapter', 'section', 'glossary',
-                                          'partintro')]" 
+                                          'part', 'partintro')]" 
     name="build-html-root" mode="hub2htm-default">
     <html>
       <head>
@@ -227,24 +227,21 @@
           <xsl:apply-templates select="dbk:info/css:rules" mode="hub2htm:css"/>
         </xsl:if>
         <xsl:call-template name="hub2htm:common-styles"/>
-        <link href="{if ($css-location = '') then concat($common-path, '/css/stylesheet.css') else $css-location}"
-          type="text/css" rel="stylesheet"/>
-        <xsl:for-each select="reverse($paths)">
-          <xsl:variable name="url" select="concat(., 'css/overrides.css')" as="xs:string"/>
-          <xsl:if test="unparsed-text-available($url)">
-            <link href="{$url}" type="text/css" rel="stylesheet"/>
-          </xsl:if>
-        </xsl:for-each>
+        <xsl:call-template name="hub2htm:style-links"/>
       </head>
-      <body>
-        <xsl:if test="dbk:info/node()[not(local-name()=('keywordset','title'))]">
-          <div class="info">
-            <xsl:apply-templates select="dbk:info/node()[not(local-name()=('keywordset','title'))]" mode="#current"/>
-          </div>
-        </xsl:if>
-        <xsl:apply-templates select="node() except dbk:info" mode="#current"/>
-      </body>
+      <xsl:call-template name="hub2htm:body"/>
     </html>
+  </xsl:template>
+
+  <xsl:template name="hub2htm:body">
+    <body>
+      <xsl:if test="dbk:info/node()[not(local-name()=('keywordset','title'))]">
+        <div class="info">
+          <xsl:apply-templates select="dbk:info/node()[not(local-name()=('keywordset','title'))]" mode="#current"/>
+        </div>
+      </xsl:if>
+      <xsl:apply-templates select="node() except dbk:info" mode="#current"/>
+    </body>
   </xsl:template>
 
   <xsl:template name="hub2htm:common-styles">
@@ -252,7 +249,18 @@
       td.marker { vertical-align:top; }
     </style>
   </xsl:template>
-  
+
+  <xsl:template name="hub2htm:style-links">
+    <link href="{if ($css-location = '') then concat($common-path, '/css/stylesheet.css') else $css-location}"
+      type="text/css" rel="stylesheet"/>
+    <xsl:for-each select="reverse($paths)">
+      <xsl:variable name="url" select="concat(., 'css/overrides.css')" as="xs:string"/>
+      <xsl:if test="unparsed-text-available($url)">
+        <link href="{$url}" type="text/css" rel="stylesheet"/>
+      </xsl:if>
+    </xsl:for-each>
+  </xsl:template>
+
   <!-- map keywords to meta elements -->
   
   <xsl:template match="dbk:keywordset[@role eq 'hub']" mode="hub2htm-default">
@@ -366,7 +374,7 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="dbk:acknowledgements | dbk:preface | dbk:chapter | dbk:partintro" mode="hub2htm-default">
+  <xsl:template match="dbk:acknowledgements | dbk:preface | dbk:chapter | dbk:part | dbk:partintro" mode="hub2htm-default">
     <xsl:if test="dbk:info">
       <xsl:for-each-group select="dbk:info/*" group-adjacent="local-name(.)">
         <xsl:choose>
@@ -388,8 +396,9 @@
 
   <xsl:template match="  dbk:toc/dbk:title | dbk:acknowledgements/dbk:title | dbk:preface/dbk:title 
                        | dbk:chapter/dbk:title | dbk:appendix/dbk:title | dbk:part/dbk:title
-                       | dbk:partintro/dbk:title" mode="hub2htm-default">
+                       | dbk:partintro/dbk:title | dbk:book/dbk:title" mode="hub2htm-default">
     <xsl:element name="h1">
+      <xsl:apply-templates select="." mode="class-att"/>
       <xsl:attribute name="title" select="string-join(.//text()[not(ancestor::dbk:indexterm)],' ')"/>
       <xsl:attribute name="id" select="concat('hd-', generate-id(.))"/>
       <xsl:apply-templates select="@*|node()" mode="#current"/>
@@ -970,11 +979,16 @@
           <xsl:apply-templates mode="#current"/>
         </xsl:when>
         <xsl:otherwise>
-          <HTMLTABLE_TODO/>
           <xsl:apply-templates mode="#current"/>
         </xsl:otherwise>
       </xsl:choose>
     </table>
+  </xsl:template>
+  
+  <xsl:template match="dbk:tr | dbk:td | dbk:th" mode="hub2htm-cals2html">
+    <xsl:element name="{local-name()}">
+      <xsl:apply-templates select="@* | node()" mode="#current"/>
+    </xsl:element>
   </xsl:template>
   
   <xsl:template match="dbk:colspec" mode="hub2htm-cals2html"/>
