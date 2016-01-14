@@ -650,6 +650,24 @@
       <xsl:apply-templates mode="#current"/>
     </p>
   </xsl:template>
+    
+  <!-- toc -->
+  
+  <xsl:template match="dbk:toc | dbk:tocpart" mode="hub2htm-default">
+    <div>
+      <xsl:call-template name="css:content"/>
+    </div>  
+  </xsl:template>
+  
+  <xsl:template match="dbk:tocentry" mode="hub2htm-default">
+    <p>
+      <xsl:call-template name="css:content"/>
+    </p>  
+  </xsl:template>
+  
+  <xsl:template match="dbk:toc | dbk:tocpart | dbk:tocentry" mode="class-att">
+    <xsl:attribute name="class" select="local-name()"/>
+  </xsl:template>
 
   <!-- anchors and links -->
   
@@ -765,7 +783,7 @@
     <span class="{local-name()}"><xsl:apply-templates select="@*, node()" mode="#current"/></span>
   </xsl:template>
 
-  <xsl:template match="dbk:bibliography" mode="hub2htm-default">
+  <xsl:template match="dbk:bibliography | dbk:bibliodiv" mode="hub2htm-default">
     <xsl:element name="div">
       <xsl:attribute name="class" select="local-name()"/>
       <xsl:apply-templates select="@*, node()" mode="#current"/>
@@ -776,6 +794,10 @@
     <xsl:element name="p">
       <xsl:apply-templates select="@*, node()" mode="#current"/>
     </xsl:element>
+  </xsl:template>
+
+  <xsl:template match="dbk:bibliomisc" mode="hub2htm-default">
+    <xsl:apply-templates select="node()" mode="#current"/>
   </xsl:template>
 
   
