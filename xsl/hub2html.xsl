@@ -516,7 +516,30 @@
       <xsl:call-template name="css:content"/>
     </span>
   </xsl:template>
+  
+  <xsl:template match="dbk:literallayout" mode="hub2htm-default">
+    <p class="literal">
+      <xsl:call-template name="css:content"/>
+    </p>
+  </xsl:template>
+  
+  <xsl:template match="dbk:*[local-name()=('literallayout','literal')]//text()" mode="hub2htm-default">
+    <xsl:analyze-string select="." regex="&#xa;">
+      <xsl:matching-substring>
+        <br/>
+      </xsl:matching-substring>
+      <xsl:non-matching-substring>
+        <xsl:value-of select="."/>
+      </xsl:non-matching-substring>
+    </xsl:analyze-string>
+  </xsl:template>
 
+  <xsl:template match="dbk:literal" mode="hub2htm-default">
+    <span class="literal">
+      <xsl:call-template name="css:content"/>
+    </span>
+  </xsl:template>
+  
   <xsl:template match="dbk:blockquote" mode="hub2htm-default">
     <div class="blockquote">
       <xsl:call-template name="css:content"/>
