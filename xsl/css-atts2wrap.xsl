@@ -50,7 +50,7 @@
       select="true()"/>
     <xsl:param name="root" as="document-node()" select="root(.)" tunnel="yes"/>
     <xsl:variable name="other-atts" as="attribute(*)*">
-      <xsl:sequence select="@*[not(css:map-att-to-elt(., ..))]"/>
+      <xsl:sequence select="@*[not(css:map-att-to-elt(., ..))][not(name() = $css:rule-selection-attribute-names)]"/>
     </xsl:variable>
     <xsl:variable name="atts" as="attribute(*)*"
                   select="(
