@@ -68,6 +68,8 @@
     select="($s9y1-role, $s9y2-role, $s9y3-role, $s9y4-role, $s9y5-role, $s9y6-role, $s9y7-role, $s9y8-role, $s9y9-role)"/>
   <xsl:variable name="common-path" as="xs:string?" select="$paths[position() = index-of($roles, 'common')]"/>
 
+  <xsl:variable name="css:rule-selection-attribute-names" select="'role'" as="xs:string*"/>
+  
   <xsl:output 
     method="xhtml" 
     indent="yes" 
@@ -157,12 +159,18 @@
         * identity template, replicate all nodes that are not matched by a template
         * -->
   
-  <xsl:template match="node() | @*" 
-    mode="hub2htm-default hub2htm-lists hub2htm-cals2html hub2htm-references hub2htm-remove-ns" 
+  <xsl:template match="node() | @*" mode="hub2htm-default" 
     priority="-10">
     <xsl:copy copy-namespaces="no">
       <xsl:call-template name="css:content"/>
-      <!--<xsl:apply-templates select="@* | node()" mode="#current"/>-->
+    </xsl:copy>
+  </xsl:template>
+  
+  <xsl:template match="node() | @*" 
+    mode="hub2htm-lists hub2htm-cals2html hub2htm-references hub2htm-remove-ns" 
+    priority="-10">
+    <xsl:copy copy-namespaces="no">
+      <xsl:apply-templates select="@* | node()" mode="#current"/>
     </xsl:copy>
   </xsl:template>
   
