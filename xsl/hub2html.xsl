@@ -402,9 +402,14 @@
     <xsl:call-template name="create-section"/>
   </xsl:template>
 
-  <xsl:template match="  dbk:toc/dbk:title | dbk:acknowledgements/dbk:title | dbk:preface/dbk:title 
-                       | dbk:chapter/dbk:title | dbk:appendix/dbk:title | dbk:part/dbk:title
-                       | dbk:partintro/dbk:title | dbk:book/dbk:title" mode="hub2htm-default">
+  <xsl:template match="  dbk:toc/dbk:title | dbk:toc/dbk:info/dbk:title 
+                       | dbk:acknowledgements/dbk:title | dbk:acknowledgements/dbk:info/dbk:title 
+                       | dbk:preface/dbk:title | dbk:preface/dbk:info/dbk:title  
+                       | dbk:chapter/dbk:title | dbk:chapter/dbk:info/dbk:title 
+                       | dbk:appendix/dbk:title | dbk:appendix/dbk:info/dbk:title 
+                       | dbk:part/dbk:title | dbk:part/dbk:info/dbk:title
+                       | dbk:partintro/dbk:title | dbk:partintro/dbk:info/dbk:title  
+                       | dbk:book/dbk:title | dbk:book/dbk:info/dbk:title" mode="hub2htm-default">
     <xsl:element name="h1">
       <xsl:apply-templates select="." mode="class-att"/>
       <xsl:attribute name="title" select="string-join(.//text()[not(ancestor::dbk:indexterm)],' ')"/>
