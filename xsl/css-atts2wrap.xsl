@@ -49,9 +49,7 @@
     <xsl:param name="css:apply-other-atts" as="xs:boolean"
       select="true()"/>
     <xsl:param name="root" as="document-node()" select="root(.)" tunnel="yes"/>
-    <xsl:variable name="other-atts" as="attribute(*)*">
-      <xsl:sequence select="@*[not(css:map-att-to-elt(., ..))][not(name() = $css:rule-selection-attribute-names)]"/>
-    </xsl:variable>
+    <xsl:variable name="other-atts" as="attribute(*)*" select="css:other-atts(.)"/>
     <xsl:variable name="atts" as="attribute(*)*"
                   select="(
                     @*
@@ -72,6 +70,15 @@
       <xsl:with-param name="other-atts" as="attribute(*)*" select="$other-atts[name() = $atts/name()]" tunnel="yes"/>
     </xsl:call-template>
   </xsl:template>
+  
+  <xsl:function name="css:other-atts" as="attribute(*)*">
+    <xsl:param name="context" as="element(*)"/>
+    <xsl:sequence select="$context/@*[not(css:map-att-to-elt(., ..))]
+                                     [not(name() = $css:rule-selection-attribute-names)]"/>
+    <!-- may be overridden with
+      <xsl:sequence select="$context/@*[not(css:map-att-to-elt(., ..))]"/> 
+    for other vocabularies (e.g., hub2bits) -->
+  </xsl:function>
   
   <!-- This should be overridden, for example with the following:
   <xsl:template name="css:other-atts">
