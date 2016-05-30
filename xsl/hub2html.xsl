@@ -382,7 +382,7 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="dbk:acknowledgements | dbk:preface | dbk:chapter | dbk:part | dbk:partintro" mode="hub2htm-default">
+  <xsl:template match="dbk:acknowledgements | dbk:preface | dbk:chapter | dbk:part | dbk:partintro | dbk:colophon" mode="hub2htm-default">
     <xsl:if test="dbk:info">
       <xsl:for-each-group select="dbk:info/*" group-adjacent="local-name(.)">
         <xsl:choose>
@@ -406,6 +406,7 @@
                        | dbk:acknowledgements/dbk:title | dbk:acknowledgements/dbk:info/dbk:title 
                        | dbk:preface/dbk:title | dbk:preface/dbk:info/dbk:title  
                        | dbk:chapter/dbk:title | dbk:chapter/dbk:info/dbk:title 
+                       | dbk:colophon/dbk:title | dbk:colophon/dbk:info/dbk:title 
                        | dbk:appendix/dbk:title | dbk:appendix/dbk:info/dbk:title 
                        | dbk:part/dbk:title | dbk:part/dbk:info/dbk:title
                        | dbk:partintro/dbk:title | dbk:partintro/dbk:info/dbk:title  
