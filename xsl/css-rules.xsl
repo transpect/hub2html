@@ -52,6 +52,25 @@
     <xsl:attribute name="{name()}" select="tr:int-rgb-colors-to-hex(tr:device-cmyk-to-rgb-int-triple(.))"/>
   </xsl:template>
   
+  <xsl:template match="@css:*[contains(., 'device-cmyk') and contains(., '-gradient')]" mode="hub2htm:css-style-overrides hub2htm:css-style-defs" priority="2">
+    <!-- e.g. linear-gradient(device-cmyk(0.96,0.69,0,0), device-cmyk(0.75,0.05,1,0)) -->
+    <xsl:variable name="regex" as="xs:string" select="'device-cmyk\s*\(\s*(0|0?\.\d+|1(\.0*)?)\s*,\s*(0|0?\.\d+|1(\.0*)?)\s*,\s*(0|0?\.\d+|1(\.0*)?)\s*,\s*(0|0?\.\d+|1(\.0*)?)\s*\)'"/>
+    <xsl:attribute name="{name()}">
+      <xsl:variable name="color-values">
+        <xsl:analyze-string select="." regex="{$regex}">
+          <xsl:matching-substring>
+            <xsl:value-of select="tr:int-rgb-colors-to-hex(tr:device-cmyk-to-rgb-int-triple(.))"/>
+          </xsl:matching-substring>
+          <xsl:non-matching-substring>
+            <xsl:value-of select="."/>
+          </xsl:non-matching-substring>
+        </xsl:analyze-string>
+        </xsl:variable>
+      <xsl:value-of select="$color-values"/>
+    </xsl:attribute>
+   
+  </xsl:template>
+  
   <!-- this give a hook to generate new ad-hoc styling for, e.g., @role
   By default, the non-css:* attributes will be discarded. -->
   <xsl:template match="@*" mode="hub2htm:css-style-overrides"/>
