@@ -1082,7 +1082,7 @@
                 <xsl:text>&#xa0;</xsl:text>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:copy-of select=".//html:span[text()][@class eq 'hub_identifier']"/>
+              	<xsl:copy-of select=".//html:span[descendant::text()][@class eq 'hub_identifier']"/>
               </xsl:otherwise>
             </xsl:choose>
           </a>
@@ -1254,7 +1254,7 @@
         <xsl:for-each select="//dbk:footnote">
           <dt id="en-{generate-id()}" class="endnote">
             <a href="#fn-{generate-id()}">
-              <xsl:copy-of select=".//*[text() and @class eq 'hub_identifier']"/>
+              <xsl:copy-of select=".//*[descendant::text() and @class eq 'hub_identifier']"/>
             </a>
           </dt>
           <dd class="endnote-text">
