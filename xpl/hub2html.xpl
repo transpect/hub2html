@@ -34,7 +34,15 @@
   <p:input port="other-params" sequence="true" kind="parameter" primary="true"/>
     
   <p:output port="result" primary="true"/>
-  
+  <p:output port="report" sequence="true">
+    <p:pipe port="report" step="default"/>
+    <p:pipe port="report" step="css"/>
+    <p:pipe port="report" step="lists"/>
+    <p:pipe port="report" step="cals2html"/>
+    <p:pipe port="report" step="figures-equations"/>
+    <p:pipe port="report" step="references"/>
+    <p:pipe port="report" step="remove-ns"/>
+  </p:output>  
   <p:import href="http://xmlcalabash.com/extension/steps/library-1.0.xpl"/>
   <p:import href="http://transpect.io/xproc-util/xslt-mode/xpl/xslt-mode.xpl"/>
   <p:import href="http://transpect.io/cascade/xpl/load-cascaded.xpl"/>
@@ -71,7 +79,7 @@
   
   <p:sink/>
 
-  <tr:xslt-mode msg="yes" mode="hub2htm-default">
+  <tr:xslt-mode msg="yes" mode="hub2htm-default" name="default">
     <p:input port="source">
       <p:pipe port="source" step="hub2html"/>
     </p:input>
@@ -89,7 +97,7 @@
     <p:with-option name="debug-dir-uri" select="$debug-dir-uri"/>
   </tr:xslt-mode>
   
-  <tr:xslt-mode msg="yes" mode="hub2htm:css">
+  <tr:xslt-mode msg="yes" mode="hub2htm:css" name="css">
     <p:input port="parameters">
       <p:pipe step="params" port="result"/>
     </p:input>
@@ -104,7 +112,7 @@
     <p:with-option name="debug-dir-uri" select="$debug-dir-uri"/>
   </tr:xslt-mode>
   
-  <tr:xslt-mode msg="yes" mode="hub2htm-lists">
+  <tr:xslt-mode msg="yes" mode="hub2htm-lists" name="lists">
     <p:input port="parameters">
       <p:pipe step="params" port="result"/>
     </p:input>
@@ -119,7 +127,7 @@
     <p:with-option name="debug-dir-uri" select="$debug-dir-uri"/>
   </tr:xslt-mode>
   
-  <tr:xslt-mode msg="yes" mode="hub2htm-cals2html">
+  <tr:xslt-mode msg="yes" mode="hub2htm-cals2html" name="cals2html">
     <p:input port="parameters">
       <p:pipe step="params" port="result"/>
     </p:input>
@@ -134,7 +142,7 @@
     <p:with-option name="debug-dir-uri" select="$debug-dir-uri"/>
   </tr:xslt-mode>
   
-  <tr:xslt-mode msg="yes" mode="hub2htm-figures-equations">
+  <tr:xslt-mode msg="yes" mode="hub2htm-figures-equations" name="figures-equations">
     <p:input port="parameters">
       <p:pipe step="params" port="result"/>
     </p:input>
@@ -149,7 +157,7 @@
     <p:with-option name="debug-dir-uri" select="$debug-dir-uri"/>
   </tr:xslt-mode>
   
-  <tr:xslt-mode msg="yes" mode="hub2htm-references">
+  <tr:xslt-mode msg="yes" mode="hub2htm-references" name="references">
     <p:input port="parameters">
       <p:pipe step="params" port="result"/>
     </p:input>
@@ -165,7 +173,7 @@
   </tr:xslt-mode>
   
 
-  <tr:xslt-mode msg="yes" mode="hub2htm-remove-ns">
+  <tr:xslt-mode msg="yes" mode="hub2htm-remove-ns" name="remove-ns">
     <p:input port="parameters">
       <p:pipe step="params" port="result"/>
     </p:input>
