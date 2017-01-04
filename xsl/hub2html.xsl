@@ -1297,7 +1297,9 @@
       </xsl:copy>
     </xsl:template>
   
-    <xsl:template match="@xml:id" mode="hub2htm-remove-ns"/>  
+    <xsl:template match="@xml:id" mode="hub2htm-remove-ns"/> 
+	
+	  <xsl:template match="@idml2xml:layer" mode="hub2htm-remove-ns"/> 
   
 <!-- just a stub (don’t know what the mode should be doing, yet it has to be used in the stylesheet because
       it is invoked in the xpl -->
