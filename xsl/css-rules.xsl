@@ -6,7 +6,8 @@
   xmlns:css="http://www.w3.org/1996/css" 
   xmlns:tr="http://transpect.io"
   xmlns:hub2htm="http://transpect.io/hub2htm" 
-  exclude-result-prefixes="xs html css hub2htm"
+  xmlns:csstmp="http://transpect.io/csstmp"  
+  exclude-result-prefixes="xs html css hub2htm csstmp"
   xmlns="http://www.w3.org/1999/xhtml"
   version="2.0">
 
@@ -28,7 +29,7 @@
     <xsl:variable name="css-selector" select="@name"/>
     <xsl:variable name="css-atts" as="attribute(*)*">
       <!-- This mode enables selective property filtering in your overriding template -->
-      <xsl:apply-templates select="@*" mode="hub2htm:css-style-defs"/>
+      <xsl:apply-templates select="@* except @csstmp:*" mode="hub2htm:css-style-defs"/>
     </xsl:variable>
     <xsl:variable name="css-properties" select="string-join(
       for $i in $css-atts return concat($i/local-name(), ':', $i)
