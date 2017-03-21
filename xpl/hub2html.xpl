@@ -23,6 +23,7 @@
   <p:option name="sections" select="'no'">
     <p:documentation>Create HTML sections from DocBook hierarchies.</p:documentation>
   </p:option>
+	<p:option name="filename-driver" required="false" select="'hub2html/hub2thtml'"/>
 
   <p:input port="source" primary="true" select="/*">
     <p:documentation>A Hub 1.1+ document</p:documentation>
@@ -69,10 +70,11 @@
     </p:input>
   </p:parameters>
   
-  <tr:load-cascaded name="lc" required="no" filename="hub2html/hub2html.xsl" fallback="http://transpect.io/hub2html/xsl/hub2html.xsl">
+  <tr:load-cascaded name="lc" required="no" fallback="http://transpect.io/hub2html/xsl/hub2html.xsl">
     <p:input port="paths">
       <p:pipe port="paths" step="hub2html"/>
     </p:input>
+    <p:with-option name="filename" select="concat(($filename-driver, 'hub2html/hub2html')[1], '.xsl')"/>
     <p:with-option name="debug" select="$debug"/>
     <p:with-option name="debug-dir-uri" select="$debug-dir-uri"/>
   </tr:load-cascaded>
@@ -92,7 +94,7 @@
     <p:input port="models">
       <p:empty/>
     </p:input>
-    <p:with-option name="prefix" select="'hub2htm/hub2htm1'"/>
+    <p:with-option name="prefix" select="'hub2html/hub2htm1'"/>
     <p:with-option name="debug" select="$debug"/>
     <p:with-option name="debug-dir-uri" select="$debug-dir-uri"/>
   </tr:xslt-mode>
@@ -107,7 +109,7 @@
     <p:input port="models">
       <p:empty/>
     </p:input>
-    <p:with-option name="prefix" select="'hub2htm/hub2htm2'"/>
+    <p:with-option name="prefix" select="'hub2html/hub2htm2'"/>
     <p:with-option name="debug" select="$debug"/>
     <p:with-option name="debug-dir-uri" select="$debug-dir-uri"/>
   </tr:xslt-mode>
@@ -122,7 +124,7 @@
     <p:input port="models">
       <p:empty/>
     </p:input>
-    <p:with-option name="prefix" select="'hub2htm/hub2htm3'"/>
+    <p:with-option name="prefix" select="'hub2html/hub2htm3'"/>
     <p:with-option name="debug" select="$debug"/>
     <p:with-option name="debug-dir-uri" select="$debug-dir-uri"/>
   </tr:xslt-mode>
@@ -137,7 +139,7 @@
     <p:input port="models">
       <p:empty/>
     </p:input>
-    <p:with-option name="prefix" select="'hub2htm/hub2htm4'"/>
+    <p:with-option name="prefix" select="'hub2html/hub2htm4'"/>
     <p:with-option name="debug" select="$debug"/>
     <p:with-option name="debug-dir-uri" select="$debug-dir-uri"/>
   </tr:xslt-mode>
@@ -152,7 +154,7 @@
     <p:input port="models">
       <p:empty/>
     </p:input>
-    <p:with-option name="prefix" select="'hub2htm/hub2htm5'"/>
+    <p:with-option name="prefix" select="'hub2html/hub2htm5'"/>
     <p:with-option name="debug" select="$debug"/>
     <p:with-option name="debug-dir-uri" select="$debug-dir-uri"/>
   </tr:xslt-mode>
@@ -167,7 +169,7 @@
     <p:input port="models">
       <p:empty/>
     </p:input>
-    <p:with-option name="prefix" select="'hub2htm/hub2htm6'"/>
+    <p:with-option name="prefix" select="'hub2html/hub2htm6'"/>
     <p:with-option name="debug" select="$debug"/>
     <p:with-option name="debug-dir-uri" select="$debug-dir-uri"/>
   </tr:xslt-mode>
@@ -183,7 +185,7 @@
     <p:input port="models">
       <p:empty/>
     </p:input>
-    <p:with-option name="prefix" select="'hub2htm/hub2htm7'"/>
+    <p:with-option name="prefix" select="'hub2html/hub2htm7'"/>
     <p:with-option name="debug" select="$debug"/>
     <p:with-option name="debug-dir-uri" select="$debug-dir-uri"/>
   </tr:xslt-mode>
