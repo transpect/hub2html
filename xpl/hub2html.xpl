@@ -23,7 +23,7 @@
   <p:option name="sections" select="'no'">
     <p:documentation>Create HTML sections from DocBook hierarchies.</p:documentation>
   </p:option>
-	<p:option name="filename-driver" required="false" select="'hub2html/hub2thtml'"/>
+	<p:option name="filename-driver" required="false" select="'hub2html/hub2html'"/>
 
   <p:input port="source" primary="true" select="/*">
     <p:documentation>A Hub 1.1+ document</p:documentation>
