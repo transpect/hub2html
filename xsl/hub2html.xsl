@@ -382,7 +382,7 @@
     </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="dbk:acknowledgements | dbk:preface | dbk:chapter | dbk:part | dbk:partintro | dbk:colophon" mode="hub2htm-default">
+  <xsl:template match="dbk:acknowledgements | dbk:preface | dbk:chapter | dbk:part | dbk:partintro | dbk:colophon | dbk:appendix" mode="hub2htm-default">
     <xsl:if test="dbk:info">
       <xsl:for-each-group select="dbk:info/*" group-adjacent="local-name(.)">
         <xsl:choose>
@@ -868,7 +868,7 @@
         <xsl:when test="@mark = '&#9633;'">
           <xsl:attribute name="class" select="'square'"/>
         </xsl:when>
-        <xsl:when test="@mark = '&#8212;'">
+        <xsl:when test="@mark = ('&#8212;', '–')">
           <xsl:attribute name="class" select="'emdash'"/>
         </xsl:when>
         <xsl:when test="@mark = ('&#8211;', 'nomark', 'none', '')">
