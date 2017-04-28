@@ -254,7 +254,7 @@
 
   <xsl:template name="hub2htm:common-styles">
     <style type="text/css">
-      td.marker { vertical-align:top; }
+      td.marker { vertical-align:top; padding-right: .75em; }
     </style>
   </xsl:template>
 
