@@ -730,7 +730,7 @@
   <xsl:template match="dbk:anchor[@xml:id and not(node())][not(exists(key('linking-element-by-linkend', @xml:id)))]"
     mode="hub2htm-default" />
   
-  <xsl:template match="dbk:figure/dbk:title" mode="hub2htm-default">
+  <xsl:template match="dbk:figure/dbk:title | dbk:figure/dbk:info/dbk:title" mode="hub2htm-default">
     <p class="{'figure-title',  @role}">
       <xsl:call-template name="css:content"/>
     </p>
@@ -743,7 +743,8 @@
       </xsl:if>
       <xsl:attribute name="class" select="self::node()/name()"/>
       <xsl:apply-templates select="@srcpath" mode="#current"/>
-      <xsl:apply-templates select="node() except dbk:title, dbk:title" mode="#current"/>
+      <xsl:apply-templates select="node() except dbk:title" mode="#current"/>
+      <xsl:apply-templates select="dbk:title" mode="#current"/>
     </xsl:element>
   </xsl:template>
   
@@ -918,10 +919,12 @@
               and
               dbk:listitem[last()]/@override = concat($last-listitem-number,'.')"/>
     <xsl:choose>
-      <xsl:when test="$redundant-overrides">
+      <xsl:when test="$redundant-overrides 
+                      or
+                     (every $item in dbk:listitem satisfies $item[not(@override)])">
         <ol>
           <xsl:if test="$numeration ne ''">
-            <xsl:attribute name="class" select="$numeration"/>
+            <xsl:attribute name="class" select="@numeration"/>
           </xsl:if>
           <xsl:for-each select="dbk:listitem">
             <li>
