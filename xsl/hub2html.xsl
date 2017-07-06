@@ -778,14 +778,14 @@
       <xsl:when test="dbk:caption">
         <div class="img">
           <img src="{ if($overwrite-image-paths eq 'yes') then concat( $image-path, '/', $src) else $src}" alt="{$src}">
-            <xsl:apply-templates select="@srcpath, @css:height" mode="#current"/>
+            <xsl:apply-templates select="(@srcpath, dbk:imageobject/dbk:imagedata/@srcpath)[1], @css:height" mode="#current"/>
           </img>
           <xsl:apply-templates select="dbk:caption" mode="#current"/>
         </div>
       </xsl:when>
       <xsl:otherwise>
         <img src="{ if($overwrite-image-paths eq 'yes') then concat( $image-path, '/', $src) else $src}" alt="{$src}">
-          <xsl:apply-templates select="@srcpath, @css:height" mode="#current"/>
+          <xsl:apply-templates select="(@srcpath, dbk:imageobject/dbk:imagedata/@srcpath)[1], @css:height" mode="#current"/>
         </img>
       </xsl:otherwise>
     </xsl:choose>
