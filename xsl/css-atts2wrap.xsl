@@ -162,6 +162,16 @@
     <xsl:param name="context" as="element(*)?"/>
     <xsl:sequence select="$css:italic-elt-name"/>
   </xsl:template>
+  
+  <xsl:template match="@remap[. = 'superscript']" mode="css:map-att-to-elt" as="xs:string?">
+    <xsl:param name="context" as="element(*)?"/>
+    <xsl:sequence select="'sup'"/>
+  </xsl:template>
+  
+  <xsl:template match="@remap[. = 'subscript']" mode="css:map-att-to-elt" as="xs:string?">
+    <xsl:param name="context" as="element(*)?"/>
+    <xsl:sequence select="'sub'"/>
+  </xsl:template>
 
   <xsl:template match="@css:font-weight[matches(., '^bold|[6-9]00$')]" 
     mode="css:map-att-to-elt" as="xs:string?">
