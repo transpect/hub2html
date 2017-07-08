@@ -145,6 +145,8 @@
   
   <xsl:variable name="css:italic-elt-name" as="xs:string?" select="'i'"/>
   <xsl:variable name="css:bold-elt-name" as="xs:string?" select="'b'"/>
+  <xsl:variable name="css:subscript-elt-name" as="xs:string?" select="'sub'"/>
+  <xsl:variable name="css:superscript-elt-name" as="xs:string?" select="'sup'"/>
   <!--<xsl:variable name="css:underline-elt-name" as="xs:string?" select="'u'"/>--><!-- not permitted in XHTML -->
   
   <xsl:function name="css:map-att-to-elt" as="xs:string?">
@@ -165,12 +167,12 @@
   
   <xsl:template match="@remap[. = 'superscript']" mode="css:map-att-to-elt" as="xs:string?">
     <xsl:param name="context" as="element(*)?"/>
-    <xsl:sequence select="'sup'"/>
+    <xsl:sequence select="$css:superscript-elt-name"/>
   </xsl:template>
   
   <xsl:template match="@remap[. = 'subscript']" mode="css:map-att-to-elt" as="xs:string?">
     <xsl:param name="context" as="element(*)?"/>
-    <xsl:sequence select="'sub'"/>
+    <xsl:sequence select="$css:subscript-elt-name"/>
   </xsl:template>
 
   <xsl:template match="@css:font-weight[matches(., '^bold|[6-9]00$')]" 
