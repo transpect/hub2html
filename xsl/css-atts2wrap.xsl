@@ -4,7 +4,7 @@
   xmlns:css="http://www.w3.org/1996/css"
   xmlns:functx="http://www.functx.com" 
   xmlns:hub2htm="http://transpect.io/hub2htm" 
-  exclude-result-prefixes="xs functx css"
+  exclude-result-prefixes="xs functx css hub2htm"
   version="2.0">
   
   <xsl:import href="http://www.functx.com/XML_Elements_and_Attributes/XML_Document_Structure/path-to-node-with-pos.xsl"/>

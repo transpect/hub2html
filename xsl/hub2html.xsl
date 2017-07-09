@@ -314,7 +314,7 @@
     <xsl:attribute name="class" select="replace(., ':|\.', '_')"/>
   </xsl:template>
   
-  <xsl:template match="@*[namespace-uri() eq 'http://transpect.io/docx2hub']|@remap" mode="hub2htm-default"/>
+  <xsl:template match="@docx2hub:*|@remap" mode="hub2htm-default"/>
 
   <xsl:template match="@renderas|@condition" mode="hub2htm-default"/>
   
