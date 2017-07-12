@@ -624,8 +624,8 @@
     </span>
   </xsl:template>
 
-  <xsl:template match="dbk:firstname | dbk:surname | dbk:honorific" mode="hub2htm-default">
-    <xsl:call-template name="css:content"/>
+  <xsl:template match="dbk:firstname | dbk:givenname | dbk:surname | dbk:honorific" mode="hub2htm-default">
+      <xsl:apply-templates mode="#current"/>
     <xsl:value-of select="if (following-sibling::*) then ' ' else ''"/>
   </xsl:template>
 
