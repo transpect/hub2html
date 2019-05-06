@@ -1094,6 +1094,7 @@
   
   <xsl:template match="dbk:indexterm" mode="hub2htm-default">
     <xsl:copy>
+      <xsl:copy-of select="@*"/>
       <xsl:attribute name="xml:id" select="generate-id()"/>
       <xsl:apply-templates mode="#current"/>
     </xsl:copy>
@@ -1117,7 +1118,7 @@
         <xsl:call-template name="generate-endnotes"/>
       </xsl:if>
       <!-- index -->
-      <xsl:if test="$generate-index eq 'yes' and //dbk:indexterm">
+      <xsl:if test="$generate-index eq 'yes' and //dbk:indexterm[not(@role = 'hub:not-placed-on-page')]">
         <xsl:call-template name="generate-index"/>
       </xsl:if>
     </xsl:copy>
@@ -1154,7 +1155,7 @@
     <div class="BC_index">
       <h1 title="{$headline-index}" class="{$section-class-level1} index_head"><xsl:value-of select="$headline-index"/></h1>
       <div class="index_list">
-        <xsl:for-each-group select="//dbk:indexterm" group-by="substring(upper-case(string-join(dbk:primary//text(),'')), 1, 1)">
+        <xsl:for-each-group select="//dbk:indexterm[not(@role = 'hub:not-placed-on-page')]" group-by="substring(upper-case(string-join(dbk:primary//text(),'')), 1, 1)">
           <xsl:sort select="upper-case(string-join(dbk:primary//text(),''))"/>
           <xsl:variable name="current-grouping-key" select="substring(upper-case(string-join(./dbk:primary//text(),'')), 1, 1)"/>
           <h2 title="{$current-grouping-key}" class="{$section-class-level2} index_subhead">
