@@ -13,6 +13,7 @@
   xmlns:docx2hub="http://transpect.io/docx2hub"
   xmlns:tr="http://transpect.io" 
   xmlns:mml="http://www.w3.org/1998/Math/MathML"
+  xmlns:svg="http://www.w3.org/2000/svg"
   xmlns="http://www.w3.org/1999/xhtml">
 
   <!--  * This stylesheet is used to transform hub format in XHTML 1.0
@@ -746,6 +747,21 @@
       <xsl:apply-templates select="node() except dbk:title" mode="#current"/>
       <xsl:apply-templates select="dbk:title" mode="#current"/>
     </xsl:element>
+  </xsl:template>
+  
+  <xsl:template match="dbk:inlinemediaobject[dbk:imageobject/dbk:imagedata/svg:svg] 
+                      |dbk:mediaobject[dbk:imageobject/dbk:imagedata/svg:svg]" mode="hub2htm-default">
+    <xsl:choose>
+      <xsl:when test="dbk:caption">
+        <div class="img">
+          <xsl:copy-of select="dbk:imageobject/dbk:imagedata/svg:svg"/>
+          <xsl:apply-templates select="dbk:caption" mode="#current"/>
+        </div>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:copy-of select="dbk:imageobject/dbk:imagedata/svg:svg"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
   
   <xsl:template match="dbk:inlinemediaobject | dbk:mediaobject" mode="hub2htm-default"> 
