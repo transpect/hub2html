@@ -61,7 +61,10 @@
                       [$css:wrap-content-with-elements-from-mappable-style-attributes]
                       /@*
                   )[css:map-att-to-elt(., current())]"/>
-    <xsl:apply-templates select="." mode="class-att"/>
+    <xsl:variable name="class" as="attribute(class)?">
+      <xsl:apply-templates select="." mode="class-att"/>
+    </xsl:variable>
+    <xsl:sequence select="$class"/>
     <xsl:call-template name="css:remaining-atts">
       <xsl:with-param name="remaining-atts" select="$other-atts[not(name() = $atts/name())]"/>
     </xsl:call-template>
