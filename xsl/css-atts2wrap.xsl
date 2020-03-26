@@ -61,7 +61,8 @@
                       [$css:wrap-content-with-elements-from-mappable-style-attributes]
                       /@*
                   )[css:map-att-to-elt(., current())]"/>
-    <xsl:variable name="class" as="attribute(class)?">
+    <xsl:variable name="class" as="attribute(*)?"><!-- typically a class attribute, but can also be content-type etc. 
+      if called by hub2bits --> 
       <xsl:apply-templates select="." mode="class-att"/>
     </xsl:variable>
     <xsl:sequence select="$class"/>
