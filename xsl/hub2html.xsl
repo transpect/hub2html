@@ -830,7 +830,7 @@
     </xsl:element>
   </xsl:template>
   
-  <xsl:template match="dbk:note" mode="hub2htm-default">
+  <xsl:template match="dbk:note | dbk:example" mode="hub2htm-default">
     <span class="{local-name()}"><xsl:apply-templates select="@*, node()" mode="#current"/></span>
   </xsl:template>
 
