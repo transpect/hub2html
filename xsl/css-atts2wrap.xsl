@@ -61,18 +61,24 @@
                       [$css:wrap-content-with-elements-from-mappable-style-attributes]
                       /@*
                   )[css:map-att-to-elt(., current())]"/>
-    <xsl:variable name="class" as="attribute(*)?"><!-- typically a class attribute, but can also be content-type etc. 
-      if called by hub2bits --> 
+    <!--<xsl:variable name="class" as="attribute(*)?"><!-\- typically a class attribute, but can also be content-type etc. 
+      if called by hub2bits -\-> 
       <xsl:apply-templates select="." mode="class-att"/>
+    </xsl:variable>-->
+    <xsl:variable name="unordered" as="item()*">
+      <xsl:apply-templates select="." mode="class-att">
+        <!-- typically a class attribute, but can also be content-type etc. if called by hub2bits; 
+          or even multiple attributes, elements -->
+      </xsl:apply-templates>
+      <xsl:call-template name="css:remaining-atts">
+        <xsl:with-param name="remaining-atts" select="$other-atts[not(name() = $atts/name())]"/>
+      </xsl:call-template>
+      <xsl:call-template name="css:wrap">
+        <xsl:with-param name="atts" select="$atts"/>
+        <xsl:with-param name="other-atts" as="attribute(*)*" select="$other-atts[name() = $atts/name()]" tunnel="yes"/>
+      </xsl:call-template>
     </xsl:variable>
-    <xsl:sequence select="$class"/>
-    <xsl:call-template name="css:remaining-atts">
-      <xsl:with-param name="remaining-atts" select="$other-atts[not(name() = $atts/name())]"/>
-    </xsl:call-template>
-    <xsl:call-template name="css:wrap">
-      <xsl:with-param name="atts" select="$atts"/>
-      <xsl:with-param name="other-atts" as="attribute(*)*" select="$other-atts[name() = $atts/name()]" tunnel="yes"/>
-    </xsl:call-template>
+    <xsl:sequence select="$unordered/self::attribute(), $unordered[empty(self::attribute())]"/>
   </xsl:template>
   
   <xsl:function name="css:other-atts" as="attribute(*)*">
@@ -129,7 +135,7 @@
   -->
   <xsl:template name="css:remaining-atts">
     <xsl:param name="remaining-atts" as="attribute(*)*"/>
-    <xsl:variable name="atts" as="attribute(*)*">
+    <xsl:variable name="atts" as="item()*"><!-- typically attribute(*)*, but for ex. an @id att may be converted to <a id="…"/> -->
       <xsl:apply-templates select="$remaining-atts[not(namespace-uri() = 'http://www.w3.org/1996/css')]" mode="#current"/>
     </xsl:variable>
     <xsl:variable name="css-atts" as="attribute(*)*">
@@ -144,7 +150,7 @@
                   '; '
                 )" />
     </xsl:if>
-    <xsl:sequence select="$atts"/>
+    <xsl:sequence select="$atts"/><!-- ordering (atts first, then elements) will be done in css:content -->
   </xsl:template>
   
   <xsl:variable name="css:italic-elt-name" as="xs:string?" select="'i'"/>
