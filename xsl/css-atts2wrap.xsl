@@ -78,7 +78,12 @@
         <xsl:with-param name="other-atts" as="attribute(*)*" select="$other-atts[name() = $atts/name()]" tunnel="yes"/>
       </xsl:call-template>
     </xsl:variable>
-    <xsl:sequence select="$unordered/self::attribute(), $unordered[empty(self::attribute())]"/>
+    <xsl:perform-sort select="$unordered/self::attribute()">
+      <!-- There have been reports that attributes sometimes arrive in random order if written to the result tree 
+        by xsl:sequence select="$unordered/self::attribute()". Therefore we sort by attribute name. -->
+      <xsl:sort select="name()"/>
+    </xsl:perform-sort>
+    <xsl:sequence select="$unordered[empty(self::attribute())]"/>
   </xsl:template>
   
   <xsl:function name="css:other-atts" as="attribute(*)*">
