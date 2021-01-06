@@ -33,6 +33,11 @@
         </xsl:otherwise>
       </xsl:choose>  
     </xsl:variable>
+    <xsl:if test="$debug = 'yes'">
+      <xsl:result-document href="{concat($debug-dir-uri,'/0_dbk-with-namespace.xml')}">
+        <xsl:sequence select="$with-namespace"/>
+      </xsl:result-document>
+    </xsl:if>
     <xsl:variable name="hub2htm:default" 
       select="transform(map{
                           'stylesheet-location': $xslt-uri,
