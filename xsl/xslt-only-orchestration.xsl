@@ -38,7 +38,13 @@
                           'source-node': $with-namespace,
                           'initial-mode': QName('', 'hub2htm-default')
                        })"/>
-    <xsl:sequence select="$hub2htm-default?output"/>
+    <xsl:variable name="hub2htm:css" 
+      select="transform(map{
+                          'stylesheet-location': $xslt-uri,
+                          'source-node': $hub2htm-default?output,
+                          'initial-mode': QName('http://transpect.io/hub2htm', 'css')
+                       })"/>
+    <xsl:sequence select="$hub2htm:css?output"/>
   </xsl:template>
 
   <xsl:template match="*" mode="add-dbk-namespace">
