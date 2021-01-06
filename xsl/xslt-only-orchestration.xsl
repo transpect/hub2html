@@ -19,7 +19,8 @@
   <xsl:param name="xslt-uri" as="xs:string" select="'http://transpect.io/hub2html/xsl/hub2html.xsl'"/>
   <xsl:param name="debug" select="'no'"/>
   <xsl:param name="debug-dir-uri" select="'debug'"/>
-  
+  <xsl:param name="indent-debug" as="xs:string" select="'yes'"/>
+
   <xsl:template match="/">
     <xsl:variable name="with-namespace" as="document-node(element(*))">
       <xsl:choose>
@@ -45,7 +46,7 @@
                           'initial-mode': QName('', 'hub2htm-default')
                        })"/>
     <xsl:if test="$debug = 'yes'">
-      <xsl:result-document href="{concat($debug-dir-uri,'/hub2htm_default.xml')}">
+      <xsl:result-document href="{concat($debug-dir-uri,'/1_hub2htm_default.xml')}" indent="{$indent-debug}">
         <xsl:sequence select="$hub2htm:default?output"/>
       </xsl:result-document>
     </xsl:if>
@@ -57,7 +58,7 @@
       'initial-mode': QName('http://transpect.io/hub2htm', 'css')
       })"/>
     <xsl:if test="$debug = 'yes'">
-      <xsl:result-document href="{concat($debug-dir-uri,'/hub2htm_css.xml')}">
+      <xsl:result-document href="{concat($debug-dir-uri,'/2_hub2htm_css.xml')}" indent="{$indent-debug}">
         <xsl:sequence select="$hub2htm:css?output"/>
       </xsl:result-document>
     </xsl:if>
@@ -69,7 +70,7 @@
       'initial-mode': QName('', 'hub2htm-lists')
       })"/>
     <xsl:if test="$debug = 'yes'">
-      <xsl:result-document href="{concat($debug-dir-uri,'/hub2htm_lists.xml')}">
+      <xsl:result-document href="{concat($debug-dir-uri,'/3_hub2htm_lists.xml')}" indent="{$indent-debug}">
         <xsl:sequence select="$hub2htm:lists?output"/>
       </xsl:result-document>
     </xsl:if>
@@ -81,7 +82,7 @@
       'initial-mode': QName('', 'hub2htm-cals2html')
       })"/>
     <xsl:if test="$debug = 'yes'">
-      <xsl:result-document href="{concat($debug-dir-uri,'/hub2htm_cals2html.xml')}">
+      <xsl:result-document href="{concat($debug-dir-uri,'/4_hub2htm_cals2html.xml')}" indent="{$indent-debug}">
         <xsl:sequence select="$hub2htm:cals2html?output"/>
       </xsl:result-document>
     </xsl:if>
@@ -93,7 +94,7 @@
       'initial-mode': QName('', 'hub2htm-references')
       })"/>
     <xsl:if test="$debug = 'yes'">
-      <xsl:result-document href="{concat($debug-dir-uri,'/hub2htm_references.xml')}">
+      <xsl:result-document href="{concat($debug-dir-uri,'/5_hub2htm_references.xml')}" indent="{$indent-debug}">
         <xsl:sequence select="$hub2htm:references?output"/>
       </xsl:result-document>
     </xsl:if>
@@ -105,10 +106,11 @@
       'initial-mode': QName('', 'hub2htm-remove-ns')
       })"/>
     <xsl:if test="$debug = 'yes'">
-      <xsl:result-document href="{concat($debug-dir-uri,'/hub2htm_remove-ns.xml')}">
+      <xsl:result-document href="{concat($debug-dir-uri,'/6_hub2htm_remove-ns.xml')}" indent="{$indent-debug}">
         <xsl:sequence select="$hub2htm:remove-ns?output"/>
       </xsl:result-document>
     </xsl:if>
+    <xsl:sequence select="$hub2htm:remove-ns?output"/>
   </xsl:template>
 
   <xsl:template match="*" mode="add-dbk-namespace">
