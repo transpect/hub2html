@@ -18,6 +18,7 @@
   <p:option name="debug" select="'yes'"/> 
   <p:option name="debug-dir-uri" select="'debug'"/>
   <p:option name="status-dir-uri" select="'status'"/>
+  <p:option name="prefix" select="'hub2html/hub2htm'"/>
   
   <p:option name="target" select="'EPUB2'"/>
   <p:option name="sections" select="'no'">
@@ -94,7 +95,7 @@
     <p:input port="models">
       <p:empty/>
     </p:input>
-    <p:with-option name="prefix" select="'hub2html/hub2htm1'"/>
+    <p:with-option name="prefix" select="concat($prefix,'1')"/>
     <p:with-option name="debug" select="$debug"/>
     <p:with-option name="debug-dir-uri" select="$debug-dir-uri"/>
   </tr:xslt-mode>
@@ -109,7 +110,7 @@
     <p:input port="models">
       <p:empty/>
     </p:input>
-    <p:with-option name="prefix" select="'hub2html/hub2htm2'"/>
+    <p:with-option name="prefix" select="concat($prefix,'2')"/>
     <p:with-option name="debug" select="$debug"/>
     <p:with-option name="debug-dir-uri" select="$debug-dir-uri"/>
   </tr:xslt-mode>
@@ -124,7 +125,7 @@
     <p:input port="models">
       <p:empty/>
     </p:input>
-    <p:with-option name="prefix" select="'hub2html/hub2htm3'"/>
+    <p:with-option name="prefix" select="concat($prefix,'3')"/>
     <p:with-option name="debug" select="$debug"/>
     <p:with-option name="debug-dir-uri" select="$debug-dir-uri"/>
   </tr:xslt-mode>
@@ -139,7 +140,7 @@
     <p:input port="models">
       <p:empty/>
     </p:input>
-    <p:with-option name="prefix" select="'hub2html/hub2htm4'"/>
+    <p:with-option name="prefix" select="concat($prefix,'4')"/>
     <p:with-option name="debug" select="$debug"/>
     <p:with-option name="debug-dir-uri" select="$debug-dir-uri"/>
   </tr:xslt-mode>
@@ -154,7 +155,7 @@
     <p:input port="models">
       <p:empty/>
     </p:input>
-    <p:with-option name="prefix" select="'hub2html/hub2htm5'"/>
+    <p:with-option name="prefix" select="concat($prefix,'5')"/>
     <p:with-option name="debug" select="$debug"/>
     <p:with-option name="debug-dir-uri" select="$debug-dir-uri"/>
   </tr:xslt-mode>
@@ -169,7 +170,7 @@
     <p:input port="models">
       <p:empty/>
     </p:input>
-    <p:with-option name="prefix" select="'hub2html/hub2htm6'"/>
+    <p:with-option name="prefix" select="concat($prefix,'6')"/>
     <p:with-option name="debug" select="$debug"/>
     <p:with-option name="debug-dir-uri" select="$debug-dir-uri"/>
   </tr:xslt-mode>
@@ -185,7 +186,7 @@
     <p:input port="models">
       <p:empty/>
     </p:input>
-    <p:with-option name="prefix" select="'hub2html/hub2htm7'"/>
+    <p:with-option name="prefix" select="concat($prefix,'7')"/>
     <p:with-option name="debug" select="$debug"/>
     <p:with-option name="debug-dir-uri" select="$debug-dir-uri"/>
   </tr:xslt-mode>
