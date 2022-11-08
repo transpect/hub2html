@@ -119,8 +119,9 @@
           <xsl:call-template name="css:remaining-atts">
             <xsl:with-param name="remaining-atts" select="$other-atts[name() = $atts[1]/name()]"/>
           </xsl:call-template>
+          <xsl:variable name="next-atts-to-wrap" as="attribute(*)*" select="subsequence($atts, 2)"/>
           <xsl:call-template name="css:wrap">
-            <xsl:with-param name="atts" select="subsequence($atts, 2)"/>
+            <xsl:with-param name="atts" select="$next-atts-to-wrap[not(. eq $atts[1])(:avoid duplicate wrappings which can occur after expansions:)]"/>
             <xsl:with-param name="other-atts" select="$other-atts[not(name() = $atts[1]/name())]" tunnel="yes"/>
           </xsl:call-template>
         </xsl:element>
