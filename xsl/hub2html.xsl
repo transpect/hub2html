@@ -1012,7 +1012,11 @@
   </xsl:template>
   
   <xsl:template match="dbk:tgroup" mode="hub2htm-cals2html">
-    <xsl:apply-templates mode="#current"/>
+    <xsl:apply-templates select="dbk:colspec, 
+                                 dbk:spanspec,
+                                 dbk:thead,
+                                 dbk:tbody,
+                                 dbk:tfoot" mode="#current"/>
   </xsl:template>
   
   <xsl:template match="dbk:tbody" mode="hub2htm-cals2html">
@@ -1025,6 +1029,12 @@
     <thead>
       <xsl:apply-templates mode="#current"/>
     </thead>
+  </xsl:template>
+  
+  <xsl:template match="dbk:tfoot" mode="hub2htm-cals2html">
+    <tfoot>
+      <xsl:apply-templates mode="#current"/>
+    </tfoot>
   </xsl:template>
   
   <xsl:template match="dbk:entry" mode="hub2htm-cals2html">
@@ -1066,7 +1076,8 @@
     </xsl:element>
   </xsl:template>
   
-  <xsl:template match="dbk:colspec" mode="hub2htm-cals2html"/>
+  <xsl:template match="dbk:colspec
+                      |dbk:spanspec" mode="hub2htm-cals2html"/>
   
   <xsl:template match="@frame" mode="hub2htm-cals2html">
     <xsl:attribute name="frame">
