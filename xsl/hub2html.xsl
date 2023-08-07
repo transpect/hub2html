@@ -356,7 +356,8 @@
   <xsl:template match="dbk:title[not(normalize-space(.))][$hub2htm:remove-empty-title-element]" 
     mode="hub2htm-default" priority="3"/>
     
-  <xsl:template match="dbk:title[parent::dbk:section] | dbk:title[parent::dbk:info[not(dbk:keywordset)][parent::dbk:section]]" mode="hub2htm-default">
+  <xsl:template match="dbk:title[parent::dbk:section] | dbk:title[parent::dbk:info[not(dbk:keywordset)][parent::dbk:section]]" 
+    mode="hub2htm-default" priority="1">
     <xsl:variable name="hierarchy-level" select="count(ancestor::dbk:section)"/>
     <xsl:variable name="html-hierarchy-level" select="if($hierarchy-level gt 6) then 6 else $hierarchy-level"/>
     <xsl:element name="{concat('h', $html-hierarchy-level)}">
