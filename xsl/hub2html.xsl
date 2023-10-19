@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<xsl:stylesheet version="2.0" 
+<xsl:stylesheet version="3.0" 
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns:xs="http://www.w3.org/2001/XMLSchema" 
   xmlns:saxon="http://saxon.sf.net/"
@@ -77,7 +77,7 @@
     doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
     doctype-public="-//W3C//DTD XHTML 1.0//EN" 
     exclude-result-prefixes="dbk xs hub2htm idml2xml"
-    saxon:suppress-indentation="p li h1 h2 h3 h4 h5 h6 th td"/>
+    suppress-indentation="p li h1 h2 h3 h4 h5 h6 th td"/>
 
   <xsl:output method="xml" indent="yes" name="debug" exclude-result-prefixes="#all"/>
 
@@ -458,7 +458,7 @@
     </p>
   </xsl:template>
   
-  <xsl:template match="dbk:phrase[not(@*)] | dbk:emphasis[not(@*)]" mode="hub2htm-default">
+  <xsl:template match="dbk:phrase[not(@*)]" mode="hub2htm-default">
     <xsl:apply-templates mode="#current"/>
   </xsl:template>
   
@@ -486,6 +486,10 @@
         </span>        
       </xsl:otherwise>
     </xsl:choose>
+  </xsl:template>
+  
+  <xsl:template match="dbk:emphasis[not(@*)]" mode="hub2htm-default">
+    <xsl:apply-templates mode="#current"/>
   </xsl:template>
   
   <xsl:template match="dbk:emphasis[not(@role)]" mode="hub2htm-default">
