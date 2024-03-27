@@ -19,6 +19,7 @@
   <p:option name="debug-dir-uri" select="'debug'"/>
   <p:option name="status-dir-uri" select="'status'"/>
   <p:option name="prefix" select="'hub2html/hub2htm'"/>
+  <p:option name="fail-on-error" select="'no'"/>
   
   <p:option name="target" select="'EPUB2'"/>
   <p:option name="sections" select="'no'">
@@ -98,6 +99,7 @@
     <p:with-option name="prefix" select="concat($prefix,'1')"/>
     <p:with-option name="debug" select="$debug"/>
     <p:with-option name="debug-dir-uri" select="$debug-dir-uri"/>
+    <p:with-option name="fail-on-error" select="$fail-on-error"/>
   </tr:xslt-mode>
   
   <tr:xslt-mode msg="yes" mode="hub2htm:css" name="css">
@@ -113,6 +115,7 @@
     <p:with-option name="prefix" select="concat($prefix,'2')"/>
     <p:with-option name="debug" select="$debug"/>
     <p:with-option name="debug-dir-uri" select="$debug-dir-uri"/>
+    <p:with-option name="fail-on-error" select="$fail-on-error"/>
   </tr:xslt-mode>
   
   <tr:xslt-mode msg="yes" mode="hub2htm-lists" name="lists">
@@ -128,6 +131,7 @@
     <p:with-option name="prefix" select="concat($prefix,'3')"/>
     <p:with-option name="debug" select="$debug"/>
     <p:with-option name="debug-dir-uri" select="$debug-dir-uri"/>
+    <p:with-option name="fail-on-error" select="$fail-on-error"/>
   </tr:xslt-mode>
   
   <tr:xslt-mode msg="yes" mode="hub2htm-cals2html" name="cals2html">
@@ -143,6 +147,7 @@
     <p:with-option name="prefix" select="concat($prefix,'4')"/>
     <p:with-option name="debug" select="$debug"/>
     <p:with-option name="debug-dir-uri" select="$debug-dir-uri"/>
+    <p:with-option name="fail-on-error" select="$fail-on-error"/>
   </tr:xslt-mode>
   
   <tr:xslt-mode msg="yes" mode="hub2htm-figures-equations" name="figures-equations">
@@ -158,6 +163,7 @@
     <p:with-option name="prefix" select="concat($prefix,'5')"/>
     <p:with-option name="debug" select="$debug"/>
     <p:with-option name="debug-dir-uri" select="$debug-dir-uri"/>
+    <p:with-option name="fail-on-error" select="$fail-on-error"/>
   </tr:xslt-mode>
   
   <tr:xslt-mode msg="yes" mode="hub2htm-references" name="references">
@@ -173,6 +179,7 @@
     <p:with-option name="prefix" select="concat($prefix,'6')"/>
     <p:with-option name="debug" select="$debug"/>
     <p:with-option name="debug-dir-uri" select="$debug-dir-uri"/>
+    <p:with-option name="fail-on-error" select="$fail-on-error"/>
   </tr:xslt-mode>
   
 
@@ -189,6 +196,7 @@
     <p:with-option name="prefix" select="concat($prefix,'7')"/>
     <p:with-option name="debug" select="$debug"/>
     <p:with-option name="debug-dir-uri" select="$debug-dir-uri"/>
+    <p:with-option name="fail-on-error" select="$fail-on-error"/>
   </tr:xslt-mode>
   
 
