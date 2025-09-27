@@ -820,7 +820,8 @@
    <xsl:apply-templates select="node()" mode="#current"/> 
   </xsl:template>
 
-  <xsl:template match="dbk:equation" mode="hub2htm-default">
+  <xsl:template match="dbk:equation
+                     | dbk:informalequation" mode="hub2htm-default">
     <div class="{name()}"><xsl:apply-templates select="@*, node()" mode="#current"/></div>
   </xsl:template>
   
@@ -839,7 +840,7 @@
     <span class="{local-name()}"><xsl:apply-templates select="@*, node()" mode="#current"/></span>
   </xsl:template>
 
-  <xsl:template match="dbk:bibliography | dbk:bibliodiv" mode="hub2htm-default">
+  <xsl:template match="dbk:bibliography | dbk:bibliodiv | dbk:bibliolist" mode="hub2htm-default">
     <xsl:element name="div">
       <xsl:attribute name="class" select="local-name()"/>
       <xsl:apply-templates select="@*, node()" mode="#current"/>
@@ -855,7 +856,12 @@
   <xsl:template match="dbk:bibliomisc" mode="hub2htm-default">
     <xsl:apply-templates select="node()" mode="#current"/>
   </xsl:template>
-
+  
+  <xsl:template match="dbk:citation" mode="hub2htm-default">
+    <xsl:element name="span">
+      <xsl:apply-templates select="@*, node()" mode="#current"/>
+    </xsl:element>
+  </xsl:template>
   
   <!--  * 
         * MODE hub2htm:css
