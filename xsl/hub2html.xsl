@@ -218,6 +218,7 @@
                                           'part', 'partintro')]" 
     name="build-html-root" mode="hub2htm-default">
     <html>
+      <xsl:apply-templates select="@xml:lang" mode="#current"/>
       <head>
         <xsl:if test="tokenize($TARGET, '\s+') = ('EPUB3', 'HTML5')">
           <meta charset="UTF-8"/>  
@@ -275,6 +276,10 @@
   <xsl:template match="dbk:keywordset[@role eq 'hub']" mode="hub2htm-default">
     <xsl:apply-templates select="dbk:keyword[@role eq 'source-dir-uri']" mode="#current"/>
   </xsl:template>
+  
+  <xsl:template match="@xml:lang" mode="hub2htm-default">
+    <xsl:attribute name="lang" select="."/>
+  </xsl:template>
 
   <xsl:template match="dbk:keywordset" mode="hub2htm-default">
     <xsl:apply-templates  mode="#current"/>
@@ -301,7 +306,7 @@
         * -->
   <xsl:template match="css:rules" mode="hub2htm-default"/>
 
-  <xsl:template match="dbk:info[parent::*[not(self::dbk:part | dbk:chapter | dbk:section | dbk:preface | dbk:colophon)]]/dbk:title" mode="hub2htm-default">
+  <xsl:template match="/*/dbk:info/dbk:title" mode="hub2htm-default">
     <xsl:if test="normalize-space(.)">
       <title>
         <xsl:apply-templates mode="#current"/>
@@ -358,7 +363,7 @@
     
   <xsl:template match="dbk:title[parent::dbk:section] | dbk:title[parent::dbk:info[not(dbk:keywordset)][parent::dbk:section]]" 
     mode="hub2htm-default" priority="1">
-    <xsl:variable name="hierarchy-level" select="count(ancestor::dbk:section)"/>
+    <xsl:variable name="hierarchy-level" select="count(ancestor::dbk:section) + count(ancestor::dbk:section[last]/ancestor::*[self::dbk:part|self::dbk:chapter|self::dbk:appendix| dbk:acknowledgements | dbk:preface | dbk:part | dbk:partintro | dbk:colophon])"/>
     <xsl:variable name="html-hierarchy-level" select="if($hierarchy-level gt 6) then 6 else $hierarchy-level"/>
     <xsl:element name="{concat('h', $html-hierarchy-level)}">
       <xsl:attribute name="title" select="string-join(.//text()[not(ancestor::dbk:indexterm)],' ')"/>
@@ -436,7 +441,7 @@
     </xsl:element>
   </xsl:template>
 
-  <xsl:template match="dbk:div" mode="hub2htm-default">
+  <xsl:template match="dbk:div|dbk:abstract" mode="hub2htm-default">
     <div>
       <xsl:if test="@role or @remap">
         <xsl:attribute name="class" select="if (@role) then @role else @remap"/>
@@ -630,8 +635,8 @@
     </span>
   </xsl:template>
 
-  <xsl:template match="dbk:firstname | dbk:givenname | dbk:surname | dbk:honorific" mode="hub2htm-default">
-      <xsl:apply-templates mode="#current"/>
+  <xsl:template match="dbk:firstname | dbk:givenname | dbk:surname | dbk:honorific | dbk:othername" mode="hub2htm-default">
+    <xsl:apply-templates mode="#current"/>
     <xsl:value-of select="if (following-sibling::*) then ' ' else ''"/>
   </xsl:template>
 
@@ -1312,7 +1317,9 @@
   
   <xsl:template match="dbk:subtitle" mode="hub2htm-default">
     <p>
-      <xsl:apply-templates select="@*, node() except dbk:info" mode="#current"/>  
+      <xsl:apply-templates select="@*" mode="#current"/>
+      <xsl:apply-templates select="." mode="class-att"/>
+      <xsl:apply-templates select="node() except dbk:info" mode="#current"/>  
     </p>
   </xsl:template>
   
