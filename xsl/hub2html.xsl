@@ -363,7 +363,7 @@
     
   <xsl:template match="dbk:title[parent::dbk:section] | dbk:title[parent::dbk:info[not(dbk:keywordset)][parent::dbk:section]]" 
     mode="hub2htm-default" priority="1">
-    <xsl:variable name="hierarchy-level" select="count(ancestor::dbk:section) + count(ancestor::dbk:section[last]/ancestor::*[self::dbk:part|self::dbk:chapter|self::dbk:appendix| dbk:acknowledgements | dbk:preface | dbk:part | dbk:partintro | dbk:colophon])"/>
+    <xsl:variable name="hierarchy-level" select="count(ancestor::dbk:section) + count(ancestor::dbk:section[last()]/ancestor::*[self::dbk:part|self::dbk:chapter|self::dbk:appendix| dbk:acknowledgements | dbk:preface | dbk:part | dbk:partintro | dbk:colophon])"/>
     <xsl:variable name="html-hierarchy-level" select="if($hierarchy-level gt 6) then 6 else $hierarchy-level"/>
     <xsl:element name="{concat('h', $html-hierarchy-level)}">
       <xsl:attribute name="title" select="string-join(.//text()[not(ancestor::dbk:indexterm)],' ')"/>
