@@ -62,6 +62,7 @@
   <xsl:param name="s9y7-role" as="xs:string?"/>
   <xsl:param name="s9y8-role" as="xs:string?"/>
   <xsl:param name="s9y9-role" as="xs:string?"/>
+  <xsl:param name="create-epub-types" as="xs:boolean?" select="false()"/>
 
   <xsl:variable name="paths" as="xs:string*" 
     select="($s9y1-path, $s9y2-path, $s9y3-path, $s9y4-path, $s9y5-path, $s9y6-path, $s9y7-path, $s9y8-path, $s9y9-path)"/>
@@ -278,7 +279,7 @@
   </xsl:template>
   
   <xsl:template match="@xml:lang" mode="hub2htm-default">
-    <xsl:attribute name="lang" select="."/>
+    <xsl:attribute name="{name()}" select="."/>
   </xsl:template>
 
   <xsl:template match="dbk:keywordset" mode="hub2htm-default">
@@ -376,6 +377,7 @@
     <xsl:choose>
       <xsl:when test="$target = 'HTML5'">
         <section class="{string-join((local-name()[not(. = 'section')], @role), ' ')}">
+          <xsl:apply-templates select="." mode="epub-type"/>
           <xsl:apply-templates select="node() except dbk:info" mode="#current"/>      
         </section>
       </xsl:when>
@@ -1325,6 +1327,7 @@
   
   <xsl:template match="*[local-name() = ('epigraph', 'dedication')]" mode="hub2htm-default">
     <div class="{concat(name(.), ' ', @role)}">
+      <xsl:apply-templates select="." mode="epub-type"/>
       <xsl:apply-templates select="@* except @role, node()" mode="#current"/>  
     </div>
   </xsl:template>
@@ -1355,4 +1358,26 @@
       </xsl:copy>
     </xsl:template>
 
+    <xsl:template match="dbk:acknowledgements[$create-epub-types]" mode="epub-type">
+      <xsl:attribute name="epub:type" select="'acknowledgments'"/>
+    </xsl:template>
+  
+    <xsl:template match="dbk:appendix[$create-epub-types]" mode="epub-type">
+       <xsl:attribute name="epub:type" select="'appendix'"/>
+    </xsl:template> 
+  
+    <xsl:template match="dbk:colophon[$create-epub-types]" mode="epub-type">
+       <xsl:attribute name="epub:type" select="'frontmatter'"/>
+    </xsl:template> 
+  
+    <xsl:template match="dbk:preface[$create-epub-types]" mode="epub-type">
+       <xsl:attribute name="epub:type" select="'preface'"/>
+    </xsl:template> 
+  
+    <xsl:template match="dbk:chapter[$create-epub-types] | dbk:part[$create-epub-types] | dbk:toc[$create-epub-types] | dbk:index[$create-epub-types]" mode="epub-type">
+       <xsl:attribute name="epub:type" select="local-name()"/>
+    </xsl:template>
+  
+    <xsl:template match="*" mode="epub-type" priority="0.5"/>
+  
 </xsl:stylesheet>
