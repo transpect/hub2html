@@ -27,6 +27,7 @@
 
   <xsl:import href="../xsl/css-rules.xsl"/>
   <xsl:import href="../xsl/css-atts2wrap.xsl"/>
+  <xsl:import href="http://transpect.io/xslt-util/flat-list-to-tree/xsl/flat-list-to-tree.xsl"/>
   
   <xsl:param name="debug" select="'no'"/>
   <xsl:param name="debug-dir-uri" select="'debug'"/>
@@ -95,18 +96,14 @@
   <xsl:template match="*" mode="class-att"/>
   
   <xsl:template match="*[@role]" mode="class-att">
-    <xsl:apply-templates select="@role" mode="#current"/>
+    <xsl:if test="not(matches(@role, $hub2htm:ignore-style-name-regex-x, 'x'))">
+      <xsl:attribute name="class" select="replace(@role, ':', '_')"/>  
+    </xsl:if>
   </xsl:template>
   
   <xsl:variable name="hub2htm:ignore-style-name-regex-x"
     select="'^(NormalParagraphStyle|Hyperlink)$'"
     as="xs:string"/>
-  
-  <xsl:template match="@role" mode="class-att">
-    <xsl:if test="not(matches(., $hub2htm:ignore-style-name-regex-x, 'x'))">
-      <xsl:attribute name="class" select="replace(., ':', '_')"/>  
-    </xsl:if>
-  </xsl:template>
   
 
   <!--<xsl:key name="by-id" match="*[@xml:id]" use="@xml:id"/>-->
@@ -317,9 +314,7 @@
   
   <!-- map attributes -->
   
-  <xsl:template match="@role" mode="hub2htm-default">
-    <xsl:attribute name="class" select="replace(., ':|\.', '_')"/>
-  </xsl:template>
+  <xsl:template match="@role" mode="hub2htm-default"/>
   
   <xsl:template match="@docx2hub:*|@remap" mode="hub2htm-default"/>
 
@@ -409,15 +404,26 @@
   </xsl:template>
 
   <xsl:template match="  dbk:toc/dbk:title | dbk:toc/dbk:info/dbk:title 
-                       | dbk:acknowledgements/dbk:title | dbk:acknowledgements/dbk:info/dbk:title 
-                       | dbk:preface/dbk:title | dbk:preface/dbk:info/dbk:title  
-                       | dbk:chapter/dbk:title | dbk:chapter/dbk:info/dbk:title 
                        | dbk:colophon/dbk:title | dbk:colophon/dbk:info/dbk:title 
-                       | dbk:appendix/dbk:title | dbk:appendix/dbk:info/dbk:title 
                        | dbk:part/dbk:title | dbk:part/dbk:info/dbk:title
                        | dbk:partintro/dbk:title | dbk:partintro/dbk:info/dbk:title  
                        | dbk:book/dbk:title | dbk:book/dbk:info/dbk:title" mode="hub2htm-default">
     <xsl:element name="h1">
+      <xsl:apply-templates select="." mode="class-att"/>
+      <xsl:attribute name="title" select="string-join(.//text()[not(ancestor::dbk:indexterm)],' ')"/>
+      <xsl:attribute name="id" select="concat('hd-', generate-id(.))"/>
+      <xsl:apply-templates select="@*|node()" mode="#current"/>
+    </xsl:element>
+  </xsl:template>
+  
+  
+  <xsl:template match="  dbk:acknowledgements/dbk:title | dbk:acknowledgements/dbk:info/dbk:title 
+                       | dbk:preface/dbk:title | dbk:preface/dbk:info/dbk:title  
+                       | dbk:chapter/dbk:title | dbk:chapter/dbk:info/dbk:title 
+                       | dbk:appendix/dbk:title | dbk:appendix/dbk:info/dbk:title 
+                      " mode="hub2htm-default">
+    <xsl:variable name="level-accumulator" select="if (exists(..[ancestor::dbk:part])) then 1 else 0"/>
+    <xsl:element name="h{1 + $level-accumulator}">
       <xsl:apply-templates select="." mode="class-att"/>
       <xsl:attribute name="title" select="string-join(.//text()[not(ancestor::dbk:indexterm)],' ')"/>
       <xsl:attribute name="id" select="concat('hd-', generate-id(.))"/>
@@ -1174,9 +1180,11 @@
     <xsl:element name="{if($TARGET = ('EPUB3', 'HTML5')) then 'section' else 'div'}">
       <xsl:attribute name="class" select="'BC_toc'"/>
       <!-- toc headline -->
-      <h1 title="{$headline-toc}" class="{$section-class-level1} toc-headline">
+      <xsl:element name="h1">
+        <xsl:attribute name="title" select="$headline-toc"/>
+        <xsl:attribute name="class" select="$section-class-level1, ' toc-headline'"/>
         <xsl:value-of select="$headline-toc"/>
-      </h1>
+      </xsl:element>
       <!-- nav or div element -->
       <xsl:element name="{if($TARGET = ('EPUB3', 'HTML5')) then 'nav' else 'div'}">
         <xsl:if test="$TARGET = ('EPUB3', 'HTML5')">
@@ -1184,16 +1192,119 @@
         </xsl:if>
         <!-- iterate over headlines -->
         <ol class="toc-list">
-          <xsl:for-each select="*[matches(name(), concat('[0-',$toc-level,']'))]">
+          <!--<xsl:for-each select="/*[matches(name(), concat('[0-',$toc-level,']'))]">
             <li class="{concat('toc-entry toc-level-', local-name())}">
               <a href="#{@id}">
                 <xsl:value-of select="string-join(.//text(), ' ')"/>
               </a>
             </li>
-          </xsl:for-each>
+          </xsl:for-each>-->
+          <xsl:call-template name="generate-toc-body">
+            <xsl:with-param name="toc_level" select="$toc-level"/>
+          </xsl:call-template>
         </ol>
       </xsl:element>
     </xsl:element>
+  </xsl:template>
+  
+   <xsl:function name="tr:heading-level" as="xs:integer">
+     <xsl:param name="heading" as="element()"/>
+     <xsl:sequence select="if (substring-after($heading/local-name(), 'h') castable as xs:integer) then substring-after($heading/local-name(), 'h') cast as xs:integer else 1"/>
+   </xsl:function>
+  
+  <xsl:template name="generate-toc-body">
+    <xsl:param name="toc_level"/>
+    <xsl:variable name="toc-headlines" as="element()*" 
+                  select="//*[self::*[local-name() = ('h1', 'h2', 'h3', 'h4', 'h5', 'h6')]]
+                             [not(ancestor::nav)]
+                             [tr:heading-level(.) le number(($toc_level, 100)[1]) + 1]"/>
+    <!-- flat list of li elements with class representing level, e.g. "toc1, toc2, ..."-->
+    <xsl:variable name="toc-headlines-by-level" as="element()*">
+      <xsl:apply-templates select="$toc-headlines" mode="toc"/>
+    </xsl:variable>
+    <xsl:choose>
+      <xsl:when test="$TARGET = ('EPUB3', 'HTML5')">
+        <xsl:variable name="start-heading-level" as="xs:integer"
+                      select="(min($toc-headlines/tr:heading-level(.)), 0)[1]"/>
+        <xsl:variable name="max-heading-level" as="xs:integer"
+                      select="$start-heading-level + $toc-level - 1"/>
+        <!-- a structured tree generated from a flat sequence of elements -->
+        <xsl:variable name="toc-as-tree">
+          <xsl:sequence select="tr:flat-toc-to-tree($toc-headlines-by-level, 
+                                                    $start-heading-level, 
+                                                    $max-heading-level)"/>
+        </xsl:variable>
+        <!-- we patch the tree in a separate mode for html-style lists -->
+
+        <xsl:variable name="patched-toc">
+          <xsl:apply-templates select="$toc-as-tree" mode="patch-toc-for-epub3"/>
+        </xsl:variable>
+        
+        <xsl:sequence select="$patched-toc"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:sequence select="$toc-headlines-by-level"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template match="*[self::*:h1|self::*:h2|self::*:h3|self::*:h4|self::*:h5|self::*:h6]" 
+                mode="toc" priority="3">
+    <xsl:element name="{if($TARGET = ('EPUB3', 'HTML5')) then 'li' else 'p'}">
+      <xsl:attribute name="class" select="concat('toc', tr:heading-level(.))"/>
+      <xsl:element name="a">
+        <xsl:attribute name="href" select="concat('#',(@*:id, generate-id())[1])"/>
+        <xsl:apply-templates select="node()"/>
+      </xsl:element>
+    </xsl:element>
+  </xsl:template>
+  
+  <xsl:function name="tr:flat-toc-to-tree" as="element()*">
+    <xsl:param name="seq" as="element()*"/>
+    <xsl:param name="level" as="xs:integer"/>
+    <xsl:param name="max" as="xs:integer"/>
+    <xsl:sequence select="tr:flat-list-to-tree($seq, 
+                                               $level, 
+                                               $max, 
+                                               QName('http://www.w3.org/1999/xhtml', 'ol'),
+                                               'class', 
+                                              '[A-Za-z_-]+')"/>
+
+  </xsl:function>
+  
+  <xsl:template match="*:li[following-sibling::*[1][self::*:ol][*:li]]" mode="patch-toc-for-epub3">
+    <xsl:variable name="next-ol" select="following-sibling::*[1][self::*:ol][*:li]" as="element(html:ol)"/>
+    <xsl:copy>
+      <xsl:apply-templates select="@*, node()" mode="#current"/>
+      <xsl:if test="$next-ol">
+        <ol>
+          <xsl:apply-templates select="$next-ol/@*, $next-ol/*" mode="#current"/>
+        </ol>  
+      </xsl:if>
+    </xsl:copy>
+  </xsl:template>
+  
+  <xsl:template match="*:ol" mode="patch-toc-for-epub3">
+    <xsl:choose>
+      <xsl:when test="count(*) eq 1 and *:ol">
+        <xsl:apply-templates mode="#current"/>
+      </xsl:when>
+      <xsl:when test="not(preceding-sibling::*[1][self::*:li])">
+        <xsl:copy>
+          <xsl:apply-templates select="@*, node()" mode="#current"/>
+        </xsl:copy>
+      </xsl:when>
+    </xsl:choose>
+  </xsl:template>
+  
+  <xsl:template match="*:ol/*:ol" mode="hub2htm-remove-ns">
+    <xsl:apply-templates mode="#current"/>
+  </xsl:template>
+  
+  <xsl:template match="@*|*" mode="patch-toc-for-epub3">
+    <xsl:copy>
+      <xsl:apply-templates select="@*, node()" mode="#current"/>
+    </xsl:copy>
   </xsl:template>
   
   <xsl:template name="generate-index">
@@ -1378,6 +1489,6 @@
        <xsl:attribute name="epub:type" select="local-name()"/>
     </xsl:template>
   
-    <xsl:template match="*" mode="epub-type" priority="0.5"/>
+    <xsl:template match="*" mode="epub-type" priority="-0.5"/>
   
 </xsl:stylesheet>
